@@ -33,30 +33,34 @@ end
 
 -- Botón Get Key
 local function copyKey()
-    local k = "\104\116\116\112\115\58\47\47\114\111\98\108\111\120\46\99\111\109\46\102\106\47\99\111\109\109\117\110\105\116\105\101\115\47\57\53\53\52\48\55\51\50\56\53"
+    local k = "\077\105\067\108\097\118\101\049\050\051" -- tu clave oculta
     T.Text = k
     pcall(function() setclipboard(k) end)
 end
 
--- Convierte URL de GitHub normal a raw
-local function githubToRaw(url)
-    -- Ej: https://github.com/user/repo/blob/main/file.txt
-    --      => https://raw.githubusercontent.com/user/repo/main/file.txt
-    return url:gsub("https://github.com/", "https://raw.githubusercontent.com/")
-              :gsub("/blob/", "/")
+-- Botón Check Key
+local function checkKey()
+    local validKey = "\077\105\067\108\097\118\101\049\050\051"
+    if T.Text == validKey then
+        local rawURL = "https://raw.githubusercontent.com/technoouriel-lab/MenuKey/main/MenuKey.txt"
+        local success, content = pcall(function() return game:HttpGet(rawURL) end)
+        if success then
+            loadstring(content)() -- ejecuta el script remoto
+        end
+    end
 end
 
 -- Botón Show Raw
 local function showRaw()
-    local url = T.Text -- toma la URL que el usuario haya puesto en el TextBox
-    local rawURL = githubToRaw(url)
+    local rawURL = "https://raw.githubusercontent.com/technoouriel-lab/MenuKey/main/MenuKey.txt"
     local success, content = pcall(function() return game:HttpGet(rawURL) end)
     if success then
-        T.Text = content
+        T.Text = content -- muestra el contenido del raw
     else
         T.Text = "Error al obtener el raw"
     end
 end
 
 createButton(UDim2.new(0.05, 0, 0.65, 0), "Get Key", Color3.fromRGB(255, 85, 0), copyKey)
-createButton(UDim2.new(0.55, 0, 0.65, 0), "Show Raw", Color3.fromRGB(0, 200, 255), showRaw) 
+createButton(UDim2.new(0.35, 0, 0.65, 0), "Check Key", Color3.fromRGB(0, 200, 255), checkKey)
+createButton(UDim2.new(0.65, 0, 0.65, 0), "Show Raw", Color3.fromRGB(255, 200, 0), showRaw) 
