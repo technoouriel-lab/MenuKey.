@@ -1,66 +1,14 @@
-local P = game.Players.LocalPlayer
-local G = Instance.new("ScreenGui", P:WaitForChild("PlayerGui"))
-
-local F = Instance.new("Frame", G)
-F.Size = UDim2.new(0, 450, 0, 260)
-F.Position = UDim2.new(0.5, -225, 0.5, -130)
-F.Active = true
-F.Draggable = true
-F.BackgroundColor3 = Color3.new(0, 0, 0)
-
-local T = Instance.new("TextBox", F)
-T.Size = UDim2.new(0, 420, 0, 50)
-T.Position = UDim2.new(0, 15, 0.08, 0)
-T.BackgroundColor3 = Color3.new(1, 1, 1)
-T.TextColor3 = Color3.new(0, 0, 0)
-T.TextScaled = true
-T.ClearTextOnFocus = false
-Instance.new("UICorner", T).CornerRadius = UDim.new(0, 15)
-
-local function createButton(position, text, color, callback)
-    local B = Instance.new("TextButton", F)
-    B.Size = UDim2.new(0, 200, 0, 70)
-    B.Position = position
-    B.Text = text
-    B.TextColor3 = Color3.new(1, 1, 1)
-    B.BackgroundColor3 = color
-    B.AutoButtonColor = false
-    Instance.new("UICorner", B).CornerRadius = UDim.new(0, 15)
-    if callback then
-        B.MouseButton1Click:Connect(callback)
-    end
-end
-
--- Botón Get Key
-local function copyKey()
-    local k = "\077\105\067\108\097\118\101\049\050\051" -- tu clave oculta
-    T.Text = k
-    pcall(function() setclipboard(k) end)
-end
-
--- Botón Check Key
-local function checkKey()
-    local validKey = "\077\105\067\108\097\118\101\049\050\051"
-    if T.Text == validKey then
-        local rawURL = "https://raw.githubusercontent.com/technoouriel-lab/MenuKey/main/MenuKey.txt"
-        local success, content = pcall(function() return game:HttpGet(rawURL) end)
-        if success then
-            loadstring(content)() -- ejecuta el script remoto
-        end
-    end
-end
-
--- Botón Show Raw
-local function showRaw()
-    local rawURL = "https://raw.githubusercontent.com/technoouriel-lab/MenuKey/main/MenuKey.txt"
-    local success, content = pcall(function() return game:HttpGet(rawURL) end)
-    if success then
-        T.Text = content -- muestra el contenido del raw
-    else
-        T.Text = "Error al obtener el raw"
-    end
-end
-
-createButton(UDim2.new(0.05, 0, 0.65, 0), "Get Key", Color3.fromRGB(255, 85, 0), copyKey)
-createButton(UDim2.new(0.35, 0, 0.65, 0), "Check Key", Color3.fromRGB(0, 200, 255), checkKey)
-createButton(UDim2.new(0.65, 0, 0.65, 0), "Show Raw", Color3.fromRGB(255, 200, 0), showRaw) 
+local P=game.Players.LocalPlayer
+local G=Instance.new("ScreenGui",P:WaitForChild("PlayerGui"))
+local F=Instance.new("Frame",G)
+F.Size, F.Position, F.Active, F.Draggable, F.BackgroundColor3 = UDim2.new(0,450,0,260), UDim2.new(0.5,-225,0.5,-130), true, true, Color3.new(0,0,0)
+local T=Instance.new("TextBox",F)
+T.Size, T.Position, T.BackgroundColor3, T.TextColor3, T.TextScaled, T.ClearTextOnFocus = UDim2.new(0,420,0,50), UDim2.new(0,15,0.08,0), Color3.new(1,1,1), Color3.new(0,0,0), true, false
+Instance.new("UICorner",T).CornerRadius = UDim.new(0,15)
+local function b(p,t,c,f) local B=Instance.new("TextButton",F); B.Size,B.Position,B.Text,B.TextColor3,B.BackgroundColor3,B.AutoButtonColor = UDim2.new(0,200,0,70), p, t, Color3.new(1,1,1), c, false; Instance.new("UICorner",B).CornerRadius=UDim.new(0,15); if f then B.MouseButton1Click:Connect(f) end end
+local function copy() local k="\077\105\067\108\097\118\101\049\050\051"; T.Text=k; pcall(function() setclipboard(k) end) end
+local function check() if T.Text=="\077\105\067\108\097\118\101\049\050\051" then loadstring(game:HttpGet("https://raw.githubusercontent.com/technoouriel-lab/MenuKey/main/MenuKey.txt"))() end end
+local function showRaw() T.Text = game:HttpGet("https://raw.githubusercontent.com/technoouriel-lab/MenuKey/main/MenuKey.txt") end
+b(UDim2.new(0.05,0,0.65,0),"Get Key",Color3.fromRGB(255,85,0),copy)
+b(UDim2.new(0.35,0,0.65,0),"Check Key",Color3.fromRGB(0,200,255),check)
+b(UDim2.new(0.65,0,0.65,0),"Show Raw",Color3.fromRGB(255,200,0),showRaw) 
